@@ -1,5 +1,7 @@
 package cn.zjn.huzhou.bigdata;
 
+import cn.zjn.huzhou.bigdata.dao.UserDao;
+import cn.zjn.huzhou.bigdata.domin.User;
 import cn.zjn.huzhou.bigdata.service.shiro.ShiroService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -10,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Set;
 
 /**
  * @Author: qiao
@@ -36,4 +40,22 @@ public class ShiroTest {
         Subject subject = SecurityUtils.getSubject();
         logger.info("isAuthenticated:"+subject.isAuthenticated());
     }
+
+    @Autowired
+    UserDao userDao;
+    @Test
+    public void testUserDao(){
+        User user = userDao.getUserByUsername("admin");
+
+        logger.info(user.toString());
+    }
+
+
+    @Test
+    public void testUserRole(){
+        Set<String> roles = userDao.getRolesByUsername("admin");
+
+        logger.info(roles.toString());
+    }
+
 }

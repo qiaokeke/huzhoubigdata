@@ -2,6 +2,8 @@ package cn.zjn.huzhou.bigdata.service.shiro;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 /**
  * @Author: qiao
  * @Description:
@@ -17,4 +19,7 @@ public interface ShiroService {
     public boolean isLogin();
 
     public String getCurrentUsername();
+
+    public boolean hasRole(String role);
+
 }

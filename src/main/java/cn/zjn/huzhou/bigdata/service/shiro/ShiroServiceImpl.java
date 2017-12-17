@@ -1,5 +1,6 @@
 package cn.zjn.huzhou.bigdata.service.shiro;
 
+import cn.zjn.huzhou.bigdata.dao.UserDao;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.SecurityManager;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Set;
 
 
 /**
@@ -58,6 +60,13 @@ public class ShiroServiceImpl implements ShiroService {
         String username = (String) subject.getPrincipal();
         return username;
     }
+
+    @Override
+    public boolean hasRole(String role) {
+        Subject subject = SecurityUtils.getSubject();
+        return subject.hasRole(role);
+    }
+
 
     @PostConstruct
     private void initStaticSecurityManager() {

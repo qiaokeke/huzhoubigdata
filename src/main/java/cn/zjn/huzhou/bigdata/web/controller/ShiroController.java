@@ -1,6 +1,8 @@
 package cn.zjn.huzhou.bigdata.web.controller;
 
 import cn.zjn.huzhou.bigdata.service.shiro.ShiroService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +43,14 @@ public class ShiroController {
     public String currentUser(){
         return shiroService.getCurrentUsername();
     }
+
+    @RequestMapping("/hasrole")
+    @RequiresAuthentication
+    public boolean hasRole(@RequestParam("role") String role){
+        return shiroService.hasRole(role);
+    }
+
+
 
 
 

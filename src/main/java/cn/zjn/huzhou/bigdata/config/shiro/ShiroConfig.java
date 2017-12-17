@@ -1,9 +1,10 @@
-package cn.zjn.huzhou.bigdata.config;
+package cn.zjn.huzhou.bigdata.config.shiro;
 
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.mgt.SubjectFactory;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.util.Factory;
 import org.apache.shiro.web.config.WebIniSecurityManagerFactory;
@@ -25,9 +26,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ShiroConfig {
 
-    @Value("${shiro.config.file}")
-    private String shiroConfigFile;
 
+    @Autowired
+    private AuthorizingRealm authorizingRealm;
 
     /**
      * 从文件中载入securityManager
@@ -35,11 +36,11 @@ public class ShiroConfig {
      */
     @Bean
     public SecurityManager securityManager(){
-        Ini ini =new Ini();
-        ini.loadFromPath(shiroConfigFile);
-        WebIniSecurityManagerFactory webIniSecurityManagerFactory = new WebIniSecurityManagerFactory(ini);
-        SecurityManager securityManager = webIniSecurityManagerFactory.getInstance();
-        return securityManager;
+        DefaultWebSecurityManager defaultWebSecurityManage = new DefaultWebSecurityManager();
+
+        defaultWebSecurityManage.setRealm(authorizingRealm);
+
+        return defaultWebSecurityManage;
     }
 
     @Autowired
@@ -50,6 +51,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         shiroFilterFactoryBean.setLoginUrl("/login");
+
 
         return shiroFilterFactoryBean;
     }
